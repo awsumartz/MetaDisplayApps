@@ -6,10 +6,9 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#000000">
-  <title>My Glasses Launcher</title>
+  <title>My Glasses Launcher - Test</title>
 
   <style>
-    /* Force Dark Mode */
     :root {
       color-scheme: dark;
     }
@@ -30,9 +29,7 @@
       height: 600px;
       background-color: #000000;
       color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont,
-        "Segoe UI", Roboto, Helvetica, Arial,
-        sans-serif;
+      font-family: Arial, sans-serif;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -43,11 +40,18 @@
       font-size: 28px;
       font-weight: 600;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
       color: #ffffff;
     }
 
-    /* 2x2 Grid */
+    #status {
+      font-size: 19px;
+      color: #00d2ff;
+      text-align: center;
+      margin-bottom: 15px;
+      min-height: 24px;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -57,7 +61,6 @@
       min-height: 0;
     }
 
-    /* Dark Buttons */
     .app-button {
       display: flex;
       flex-direction: column;
@@ -73,10 +76,6 @@
       text-align: center;
       padding: 10px;
 
-      transition: background-color 0.2s,
-                  border-color 0.2s;
-
-      /* Gesture compatibility */
       cursor: pointer;
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
@@ -91,13 +90,12 @@
     .app-button:hover,
     .app-button:focus-visible {
       background-color: #222222;
-      border-color: #ffffff;
+      border-color: #00d2ff;
+      outline: none;
     }
 
-    .app-button:active,
-    .app-button.pressed {
+    .app-button:active {
       background-color: #444444;
-      color: #ffffff;
       border-color: #ffffff;
     }
 
@@ -114,51 +112,48 @@
       pointer-events: none;
       -webkit-user-drag: none;
       user-select: none;
-      -webkit-user-select: none;
     }
   </style>
 </head>
 
 <body>
 
-  <h1>App Launcher</h1>
+  <h1 id="testTitle">App Launcher</h1>
+  <div id="status">Waiting for input...</div>
 
   <div class="grid">
 
     <!-- MovieBox Pro -->
     <a href="https://movieboxpro.app"
        class="app-button"
-       onclick="openApp(event, this)">
+       data-app="MovieBox Pro">
       <span class="icon">
-        <img src="mbp.jpg"
-             alt="MovieBox Pro">
+        <img src="mbp.jpg" alt="MovieBox Pro">
       </span>
     </a>
 
     <!-- YouTube -->
     <a href="https://herald.ascents.gg/a/youtube/"
        class="app-button"
-       onclick="openApp(event, this)">
+       data-app="YouTube">
       <span class="icon">
-        <img src="yt.jpg"
-             alt="YouTube">
+        <img src="yt.jpg" alt="YouTube">
       </span>
     </a>
 
     <!-- ChatGPT -->
-    <a href="https://accounts.google.com/v3/signin/identifier?opparams=%253Faudience%253D799222349882-ne3i0s9jdm5s0p7ll2d7tlsi1vc1halt.apps.googleusercontent.com&dsh=S1829251932%3A1792677965460326&client_id=799222349882-ne3i0s9jdm5s0p7ll2d7tlsi1vc1halt.apps.googleusercontent.com&nonce=LZ8lUjdGoNcjq0F864AX&o2v=2&redirect_uri=https%3A%2F%2Fauth.openai.com%2Fapi%2Faccounts%2Fcallback%2Fgoogle&response_type=code&scope=openid+profile+email&service=lso&state=4d0ff61c-9f5a-4624-96a4-8c19b790184a&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fv3%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hANBI2FJKsE9HT-FKxr2wDViSvZ5s2VuEWT5v6RNrisW5PVC0Ln1Lo8GIejzG2iDdCjNMWLoSQ4wrh8xDEe41r0iYIHapT7GmqcZoy00_hRYz6IBhT3NSLSXPktEolQfq9DsXxn1aQ7Cbsx0LrR5TpARwyz829Bi8EzFuI2mlr9YUr0E_LRgmTLOT_2uRpevJrsKS8iFUHl6wnsOau5tTMo-AKsGQcNO9kjjWFengMwIbledFOvilRmUwvqhWEMdP7nuW4NrMSto6BZvBHSNMwGkJa3XR3t9wrciLStS2sMqshWY-5HbQUn2sZXTe7ZT8OziF43qQ5ykaMxYQ5Bwqf347B5nEJPPhmZJne9fMKGiKdzYGvkRZoljrmksamCEIw85nP823Zj7GLibeyYQVfR8hobFCf0b3BR_StrYyoLuCMzwfCH8FyW2iOwz-gwUO1AC_J2bhk-u5L_BvfHfH0F3SSDeaQ%26flowName%3DGeneralOAuthFlow%26as%3DS1829251932%253A1792677965460326%26client_id%3D799222349882-ne3i0s9jdm5s0p7ll2d7tlsi1vc1halt.apps.googleusercontent.com%26requestPath%3D%252Fsignin%252Foauth%252Fv3%252Fconsent%23&app_domain=https%3A%2F%2Fauth.openai.com&rart=ANgoxcf0mGU0bZvO_HuQu9laNDpfCSQZkcuwfqt7MwVI9lx3nX9uZ3hhXJZxy7yM6HiRfx42zQkyC7mben--6VZV62uT97Xs0EYp8IqUWUH5WE2-DbDU88k"
+    <a href="https://chatgpt.com"
        class="app-button"
-       onclick="openApp(event, this)">
+       data-app="ChatGPT">
       <span class="icon">
-        <img src="chatgpt.jpg"
-             alt="ChatGPT">
+        <img src="chatgpt.jpg" alt="ChatGPT">
       </span>
     </a>
 
     <!-- Custom App 4 -->
     <a href="https://your-fourth-app-url.com"
        class="app-button"
-       onclick="openApp(event, this)">
+       data-app="Custom App 4">
       <span class="icon">⚙️</span>
       <span>Custom App 4</span>
     </a>
@@ -166,16 +161,75 @@
   </div>
 
   <script>
-    /* Open apps when buttons are activated */
-    function openApp(event, button) {
-      event.preventDefault();
+    const title = document.getElementById("testTitle");
+    const status = document.getElementById("status");
 
-      // Visual feedback
-      button.classList.add("pressed");
+    let eventCount = 0;
 
-      // Navigate in the same browser window
-      window.location.assign(button.href);
+    function showEvent(type, detail) {
+      eventCount++;
+
+      title.textContent = type + " DETECTED!";
+      status.textContent =
+        "#" + eventCount + " " + detail;
     }
+
+    // Detect keyboard events from Neural Band
+    document.addEventListener("keydown", function(event) {
+      showEvent("KEY", event.key);
+
+      if (event.key === "Enter" ||
+          event.key === " ") {
+        event.preventDefault();
+        showEvent("ENTER", event.key);
+      }
+    }, true);
+
+    // Detect clicks on app buttons
+    document.addEventListener("click", function(event) {
+      const button = event.target.closest(".app-button");
+
+      if (button) {
+        event.preventDefault();
+        showEvent(
+          "CLICK",
+          button.getAttribute("data-app")
+        );
+      } else {
+        showEvent("CLICK", "Page");
+      }
+    }, true);
+
+    // Detect touch events
+    document.addEventListener("touchstart", function(event) {
+      showEvent("TOUCH", "Touch started");
+    }, { passive: true, capture: true });
+
+    // Detect pointer events
+    document.addEventListener("pointerdown", function(event) {
+      showEvent(
+        "POINTER",
+        event.pointerType || "unknown"
+      );
+    }, true);
+
+    // Detect focus changes
+    document.addEventListener("focusin", function(event) {
+      const button = event.target.closest(".app-button");
+
+      if (button) {
+        status.textContent =
+          "Focused: " + button.getAttribute("data-app");
+      }
+    });
+
+    // Prevent navigation while testing
+    document.querySelectorAll(".app-button")
+      .forEach(function(button) {
+        button.addEventListener("click", function(event) {
+          event.preventDefault();
+        });
+      });
   </script>
 
 </body>
