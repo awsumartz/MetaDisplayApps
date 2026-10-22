@@ -6,9 +6,10 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#000000">
-  <title>My Glasses Launcher - Test</title>
+  <title>My Glasses Launcher</title>
 
   <style>
+    /* Dark Mode */
     :root {
       color-scheme: dark;
     }
@@ -29,7 +30,7 @@
       height: 600px;
       background-color: #000000;
       color: #ffffff;
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -40,18 +41,20 @@
       font-size: 28px;
       font-weight: 600;
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       color: #ffffff;
     }
 
+    /* Navigation status */
     #status {
-      font-size: 19px;
+      font-size: 16px;
       color: #00d2ff;
       text-align: center;
-      margin-bottom: 15px;
-      min-height: 24px;
+      min-height: 22px;
+      margin-bottom: 10px;
     }
 
+    /* 2x2 App Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -61,6 +64,7 @@
       min-height: 0;
     }
 
+    /* App Buttons */
     .app-button {
       display: flex;
       flex-direction: column;
@@ -87,7 +91,8 @@
       color: #ffffff;
     }
 
-    .app-button:hover,
+    /* Highlight selected app */
+    .app-button:focus,
     .app-button:focus-visible {
       background-color: #222222;
       border-color: #00d2ff;
@@ -99,6 +104,7 @@
       border-color: #ffffff;
     }
 
+    /* Icons */
     .icon {
       font-size: 40px;
       margin-bottom: 8px;
@@ -112,14 +118,17 @@
       pointer-events: none;
       -webkit-user-drag: none;
       user-select: none;
+      -webkit-user-select: none;
     }
   </style>
 </head>
 
 <body>
 
-  <h1 id="testTitle">App Launcher</h1>
-  <div id="status">Waiting for input...</div>
+  <h1>App Launcher</h1>
+  <div id="status" aria-live="polite">
+    Select an app
+  </div>
 
   <div class="grid">
 
@@ -128,7 +137,8 @@
        class="app-button"
        data-app="MovieBox Pro">
       <span class="icon">
-        <img src="mbp.jpg" alt="MovieBox Pro">
+        <img src="mbp.jpg"
+             alt="MovieBox Pro">
       </span>
     </a>
 
@@ -137,7 +147,8 @@
        class="app-button"
        data-app="YouTube">
       <span class="icon">
-        <img src="yt.jpg" alt="YouTube">
+        <img src="yt.jpg"
+             alt="YouTube">
       </span>
     </a>
 
@@ -146,7 +157,8 @@
        class="app-button"
        data-app="ChatGPT">
       <span class="icon">
-        <img src="chatgpt.jpg" alt="ChatGPT">
+        <img src="chatgpt.jpg"
+             alt="ChatGPT">
       </span>
     </a>
 
@@ -161,75 +173,49 @@
   </div>
 
   <script>
-    const title = document.getElementById("testTitle");
-    const status = document.getElementById("status");
+    const statusText =
+      document.getElementById("status");
 
-    let eventCount = 0;
+    const appButtons =
+      document.querySelectorAll(".app-button");
 
-    function showEvent(type, detail) {
-      eventCount++;
-
-      title.textContent = type + " DETECTED!";
-      status.textContent =
-        "#" + eventCount + " " + detail;
-    }
-
-    // Detect keyboard events from Neural Band
-    document.addEventListener("keydown", function(event) {
-      showEvent("KEY", event.key);
-
-      if (event.key === "Enter" ||
-          event.key === " ") {
-        event.preventDefault();
-        showEvent("ENTER", event.key);
-      }
-    }, true);
-
-    // Detect clicks on app buttons
-    document.addEventListener("click", function(event) {
-      const button = event.target.closest(".app-button");
-
-      if (button) {
-        event.preventDefault();
-        showEvent(
-          "CLICK",
-          button.getAttribute("data-app")
-        );
-      } else {
-        showEvent("CLICK", "Page");
-      }
-    }, true);
-
-    // Detect touch events
-    document.addEventListener("touchstart", function(event) {
-      showEvent("TOUCH", "Touch started");
-    }, { passive: true, capture: true });
-
-    // Detect pointer events
-    document.addEventListener("pointerdown", function(event) {
-      showEvent(
-        "POINTER",
-        event.pointerType || "unknown"
-      );
-    }, true);
-
-    // Detect focus changes
+    // Show which app currently has focus
     document.addEventListener("focusin", function(event) {
       const button = event.target.closest(".app-button");
 
       if (button) {
-        status.textContent =
-          "Focused: " + button.getAttribute("data-app");
+        statusText.textContent =
+          "Selected: " + button.dataset.app;
       }
     });
 
-    // Prevent navigation while testing
-    document.querySelectorAll(".app-button")
-      .forEach(function(button) {
-        button.addEventListener("click", function(event) {
-          event.preventDefault();
-        });
+    // Handle Neural Band pinch (Enter)
+    document.addEventListener("keydown", function(event) {
+      if (event.key !== "Enter") {
+        return;
+      }
+
+      const selectedApp = document.activeElement;
+
+      if (selectedApp &&
+          selectedApp.classList.contains("app-button")) {
+
+        event.preventDefault();
+
+        statusText.textContent =
+          "Opening: " + selectedApp.dataset.app;
+
+        window.location.assign(selectedApp.href);
+      }
+    });
+
+    // Standard mouse/touch navigation
+    appButtons.forEach(function(button) {
+      button.addEventListener("click", function() {
+        statusText.textContent =
+          "Opening: " + button.dataset.app;
       });
+    });
   </script>
 
 </body>
