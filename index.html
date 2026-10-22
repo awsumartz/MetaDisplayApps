@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#000000">
   <title>My Glasses Launcher</title>
 
@@ -71,8 +72,16 @@
       font-weight: 500;
       text-align: center;
       padding: 10px;
+
       transition: background-color 0.2s,
                   border-color 0.2s;
+
+      /* Gesture compatibility */
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .app-button:visited {
@@ -85,7 +94,8 @@
       border-color: #ffffff;
     }
 
-    .app-button:active {
+    .app-button:active,
+    .app-button.pressed {
       background-color: #444444;
       color: #ffffff;
       border-color: #ffffff;
@@ -94,12 +104,17 @@
     .icon {
       font-size: 40px;
       margin-bottom: 8px;
+      pointer-events: none;
     }
 
     .icon img {
       width: 256px;
       height: 256px;
       object-fit: contain;
+      pointer-events: none;
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
   </style>
 </head>
@@ -112,42 +127,56 @@
 
     <!-- MovieBox Pro -->
     <a href="https://movieboxpro.app"
-       class="app-button">
+       class="app-button"
+       onclick="openApp(event, this)">
       <span class="icon">
-        <img
-          src="55605722595_96473b12a4_m.jpg"
-          alt="MovieBox Pro">
+        <img src="mbp.jpg"
+             alt="MovieBox Pro">
       </span>
     </a>
 
     <!-- YouTube -->
     <a href="https://herald.ascents.gg/a/youtube/"
-       class="app-button">
+       class="app-button"
+       onclick="openApp(event, this)">
       <span class="icon">
-        <img
-          src="55605440928_a225a44ec9_m.jpg"
-          alt="YouTube">
+        <img src="yt.jpg"
+             alt="YouTube">
       </span>
     </a>
 
     <!-- ChatGPT -->
     <a href="https://accounts.google.com/v3/signin/identifier?opparams=%253Faudience%253D799222349882-ne3i0s9jdm5s0p7ll2d7tlsi1vc1halt.apps.googleusercontent.com&dsh=S1829251932%3A1792677965460326&client_id=799222349882-ne3i0s9jdm5s0p7ll2d7tlsi1vc1halt.apps.googleusercontent.com&nonce=LZ8lUjdGoNcjq0F864AX&o2v=2&redirect_uri=https%3A%2F%2Fauth.openai.com%2Fapi%2Faccounts%2Fcallback%2Fgoogle&response_type=code&scope=openid+profile+email&service=lso&state=4d0ff61c-9f5a-4624-96a4-8c19b790184a&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fv3%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hANBI2FJKsE9HT-FKxr2wDViSvZ5s2VuEWT5v6RNrisW5PVC0Ln1Lo8GIejzG2iDdCjNMWLoSQ4wrh8xDEe41r0iYIHapT7GmqcZoy00_hRYz6IBhT3NSLSXPktEolQfq9DsXxn1aQ7Cbsx0LrR5TpARwyz829Bi8EzFuI2mlr9YUr0E_LRgmTLOT_2uRpevJrsKS8iFUHl6wnsOau5tTMo-AKsGQcNO9kjjWFengMwIbledFOvilRmUwvqhWEMdP7nuW4NrMSto6BZvBHSNMwGkJa3XR3t9wrciLStS2sMqshWY-5HbQUn2sZXTe7ZT8OziF43qQ5ykaMxYQ5Bwqf347B5nEJPPhmZJne9fMKGiKdzYGvkRZoljrmksamCEIw85nP823Zj7GLibeyYQVfR8hobFCf0b3BR_StrYyoLuCMzwfCH8FyW2iOwz-gwUO1AC_J2bhk-u5L_BvfHfH0F3SSDeaQ%26flowName%3DGeneralOAuthFlow%26as%3DS1829251932%253A1792677965460326%26client_id%3D799222349882-ne3i0s9jdm5s0p7ll2d7tlsi1vc1halt.apps.googleusercontent.com%26requestPath%3D%252Fsignin%252Foauth%252Fv3%252Fconsent%23&app_domain=https%3A%2F%2Fauth.openai.com&rart=ANgoxcf0mGU0bZvO_HuQu9laNDpfCSQZkcuwfqt7MwVI9lx3nX9uZ3hhXJZxy7yM6HiRfx42zQkyC7mben--6VZV62uT97Xs0EYp8IqUWUH5WE2-DbDU88k"
-       class="app-button">
+       class="app-button"
+       onclick="openApp(event, this)">
       <span class="icon">
-        <img
-          src="chatgpt.jpg"
-          alt="YouTube">
+        <img src="chatgpt.jpg"
+             alt="ChatGPT">
       </span>
     </a>
 
     <!-- Custom App 4 -->
     <a href="https://your-fourth-app-url.com"
-       class="app-button">
+       class="app-button"
+       onclick="openApp(event, this)">
       <span class="icon">⚙️</span>
       <span>Custom App 4</span>
     </a>
 
   </div>
+
+  <script>
+    /* Open apps when buttons are activated */
+    function openApp(event, button) {
+      event.preventDefault();
+
+      // Visual feedback
+      button.classList.add("pressed");
+
+      // Navigate in the same browser window
+      window.location.assign(button.href);
+    }
+  </script>
 
 </body>
 </html>
