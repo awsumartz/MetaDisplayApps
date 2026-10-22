@@ -6,31 +6,33 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#000000">
+
   <title>My Glasses Launcher</title>
 
   <style>
-    :root {
-      color-scheme: dark;
-    }
-
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
-    html {
-      background-color: #000000;
-      color: #ffffff;
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow: hidden;
     }
 
     body {
       width: 600px;
       height: 600px;
-      background-color: #000000;
-      color: #ffffff;
-      font-family: Arial, Helvetica, sans-serif;
-      overflow: hidden;
+    }
+
+    #launcher {
+      width: 600px;
+      height: 600px;
       display: flex;
       flex-direction: column;
       padding: 20px;
@@ -38,27 +40,24 @@
 
     h1 {
       font-size: 28px;
-      font-weight: 600;
       text-align: center;
-      margin-bottom: 10px;
-      color: #ffffff;
+      margin: 0 0 10px;
     }
 
     #status {
       font-size: 16px;
       color: #00d2ff;
       text-align: center;
-      min-height: 22px;
+      min-height: 24px;
       margin-bottom: 10px;
     }
 
-    /* 2x2 App Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(2, 1fr);
       gap: 15px;
-      flex-grow: 1;
+      flex: 1;
       min-height: 0;
     }
 
@@ -67,164 +66,214 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #111111;
-      border: 2px solid #333333;
+      background: #111;
+      border: 2px solid #333;
       border-radius: 16px;
-      color: #ffffff;
+      color: white;
       text-decoration: none;
-      font-size: 22px;
-      font-weight: 500;
-      text-align: center;
-      padding: 10px;
-
       cursor: pointer;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-
-    .app-button:visited {
-      color: #ffffff;
+      padding: 10px;
     }
 
     .app-button:focus,
     .app-button:focus-visible {
-      background-color: #222222;
-      border-color: #00d2ff;
       outline: none;
+      border-color: #00d2ff;
+      background: #222;
     }
 
-    .app-button:active {
-      background-color: #444444;
-      border-color: #ffffff;
-    }
-
-    .icon {
-      font-size: 40px;
-      margin-bottom: 8px;
-      pointer-events: none;
-    }
-
-    .icon img {
-      width: 256px;
-      height: 256px;
+    .app-button img {
+      width: 100%;
+      max-width: 220px;
+      max-height: 220px;
       object-fit: contain;
       pointer-events: none;
-      -webkit-user-drag: none;
-      user-select: none;
+    }
+
+    .app-button span {
+      pointer-events: none;
+    }
+
+    #viewer {
+      display: none;
+      width: 600px;
+      height: 600px;
+      position: relative;
+      background: #000;
+    }
+
+    #toolbar {
+      height: 50px;
+      background: #111;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 5px 10px;
+    }
+
+    #homeButton {
+      border: 2px solid #555;
+      background: #222;
+      color: white;
+      border-radius: 10px;
+      font-size: 18px;
+      padding: 7px 14px;
+      cursor: pointer;
+    }
+
+    #homeButton:focus,
+    #homeButton:focus-visible {
+      outline: none;
+      border-color: #00d2ff;
+    }
+
+    #appTitle {
+      font-size: 18px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    #appFrame {
+      width: 600px;
+      height: 550px;
+      border: none;
+      background: #000;
     }
   </style>
 </head>
 
 <body>
 
-  <h1>App Launcher</h1>
-  <div id="status" aria-live="polite">
-    Select an app
+  <div id="launcher">
+    <h1>App Launcher</h1>
+
+    <div id="status" aria-live="polite">
+      Select an app
+    </div>
+
+    <div class="grid">
+
+      <a class="app-button"
+         href="https://movieboxpro.app"
+         data-app="MovieBox Pro">
+        <img src="mbp.jpg" alt="MovieBox Pro">
+      </a>
+
+      <a class="app-button"
+         href="https://herald.ascents.gg/a/youtube/"
+         data-app="YouTube">
+        <img src="yt.jpg" alt="YouTube">
+      </a>
+
+      <a class="app-button"
+         href="https://chatgpt.com"
+         data-app="ChatGPT">
+        <img src="chatgpt.jpg" alt="ChatGPT">
+      </a>
+
+      <a class="app-button"
+         href="https://your-fourth-app-url.com"
+         data-app="Custom App 4">
+        <span style="font-size:60px">⚙️</span>
+        <span>Custom App 4</span>
+      </a>
+
+    </div>
   </div>
 
-  <div class="grid">
+  <div id="viewer">
+    <div id="toolbar">
+      <button id="homeButton" type="button">
+        ⌂ Home
+      </button>
+      <span id="appTitle"></span>
+    </div>
 
-    <!-- MovieBox Pro -->
-    <a href="https://movieboxpro.app"
-       class="app-button"
-       data-app="MovieBox Pro"
-       target="_blank"
-       rel="noopener">
-      <span class="icon">
-        <img src="mbp.jpg" alt="MovieBox Pro">
-      </span>
-    </a>
-
-    <!-- YouTube -->
-    <a href="https://herald.ascents.gg/a/youtube/"
-       class="app-button"
-       data-app="YouTube"
-       target="_blank"
-       rel="noopener">
-      <span class="icon">
-        <img src="yt.jpg" alt="YouTube">
-      </span>
-    </a>
-
-    <!-- ChatGPT -->
-    <a href="https://chatgpt.com"
-       class="app-button"
-       data-app="ChatGPT"
-       target="_blank"
-       rel="noopener">
-      <span class="icon">
-        <img src="chatgpt.jpg" alt="ChatGPT">
-      </span>
-    </a>
-
-    <!-- Custom App 4 -->
-    <a href="https://your-fourth-app-url.com"
-       class="app-button"
-       data-app="Custom App 4"
-       target="_blank"
-       rel="noopener">
-      <span class="icon">⚙️</span>
-      <span>Custom App 4</span>
-    </a>
-
+    <iframe
+      id="appFrame"
+      title="Selected application"
+      allow="fullscreen; autoplay; clipboard-read; clipboard-write"
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
   </div>
 
   <script>
-    const statusText =
-      document.getElementById("status");
+    const launcher = document.getElementById("launcher");
+    const viewer = document.getElementById("viewer");
+    const frame = document.getElementById("appFrame");
+    const status = document.getElementById("status");
+    const title = document.getElementById("appTitle");
+    const homeButton = document.getElementById("homeButton");
+    const buttons = document.querySelectorAll(".app-button");
 
-    const appButtons =
-      document.querySelectorAll(".app-button");
+    let lastSelected = null;
 
-    // Display selected app
-    document.addEventListener("focusin", function(event) {
-      const button = event.target.closest(".app-button");
+    function openApp(button) {
+      lastSelected = button;
 
-      if (button) {
-        statusText.textContent =
-          "Selected: " + button.dataset.app;
+      const url = button.href;
+      const appName = button.dataset.app;
+
+      title.textContent = appName;
+      status.textContent = "Opening: " + appName;
+
+      launcher.style.display = "none";
+      viewer.style.display = "block";
+
+      frame.src = url;
+
+      // Keep the Home button accessible to
+      // the Neural Band.
+      homeButton.focus();
+    }
+
+    function goHome() {
+      frame.src = "about:blank";
+
+      viewer.style.display = "none";
+      launcher.style.display = "flex";
+
+      status.textContent = "Select an app";
+
+      if (lastSelected) {
+        lastSelected.focus();
       }
+    }
+
+    buttons.forEach(function(button) {
+      button.addEventListener("click", function(event) {
+        event.preventDefault();
+        openApp(button);
+      });
     });
 
-    // Neural Band pinch (Enter key)
+    homeButton.addEventListener("click", goHome);
+
     document.addEventListener("keydown", function(event) {
       if (event.key !== "Enter" || event.repeat) {
         return;
       }
 
-      const selectedApp = document.activeElement;
+      const selected = document.activeElement;
 
-      if (selectedApp &&
-          selectedApp.classList.contains("app-button")) {
-
+      if (
+        launcher.style.display !== "none" &&
+        selected &&
+        selected.classList.contains("app-button")
+      ) {
         event.preventDefault();
-
-        statusText.textContent =
-          "Opening: " + selectedApp.dataset.app;
-
-        // Test opening a new browser window
-        const newWindow = window.open(
-          selectedApp.href,
-          "_blank"
-        );
-
-        if (!newWindow) {
-          statusText.textContent =
-            "New window may be blocked";
-        }
+        openApp(selected);
       }
+
+      // The Home button uses its normal
+      // keyboard click behavior.
     });
 
-    // Normal mouse/touch activation
-    appButtons.forEach(function(button) {
-      button.addEventListener("click", function(event) {
-        // Let normal browser behavior handle
-        // mouse/touch clicks and target="_blank".
-        statusText.textContent =
-          "Opening: " + button.dataset.app;
-      });
+    window.addEventListener("load", function() {
+      if (buttons.length) {
+        buttons[0].focus();
+      }
     });
   </script>
 
