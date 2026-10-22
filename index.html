@@ -1,38 +1,39 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
+
   <meta name="theme-color" content="#000000">
 
   <title>My Glasses Launcher</title>
 
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      color-scheme: dark;
     }
 
-    html, body {
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      color: #fff;
+    }
+
+    html,
+    body {
+      width: 600px;
+      height: 600px;
+      background: #000000;
+      color: #ffffff;
       font-family: Arial, Helvetica, sans-serif;
       overflow: hidden;
     }
 
     body {
-      width: 600px;
-      height: 600px;
-    }
-
-    #launcher {
-      width: 600px;
-      height: 600px;
       display: flex;
       flex-direction: column;
       padding: 20px;
@@ -40,8 +41,9 @@
 
     h1 {
       font-size: 28px;
+      font-weight: 600;
       text-align: center;
-      margin: 0 0 10px;
+      margin-bottom: 10px;
     }
 
     #status {
@@ -61,25 +63,40 @@
       min-height: 0;
     }
 
+    .app-form {
+      width: 100%;
+      height: 100%;
+    }
+
     .app-button {
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #111;
-      border: 2px solid #333;
+      background: #111111;
+      border: 2px solid #333333;
       border-radius: 16px;
-      color: white;
-      text-decoration: none;
+      color: #ffffff;
       cursor: pointer;
       padding: 10px;
+      font-family: inherit;
+      font-size: 20px;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .app-button:focus,
     .app-button:focus-visible {
       outline: none;
       border-color: #00d2ff;
-      background: #222;
+      background: #222222;
+    }
+
+    .app-button:active {
+      background: #444444;
+      border-color: #ffffff;
     }
 
     .app-button img {
@@ -88,191 +105,142 @@
       max-height: 220px;
       object-fit: contain;
       pointer-events: none;
+      user-select: none;
     }
 
     .app-button span {
       pointer-events: none;
-    }
-
-    #viewer {
-      display: none;
-      width: 600px;
-      height: 600px;
-      position: relative;
-      background: #000;
-    }
-
-    #toolbar {
-      height: 50px;
-      background: #111;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 5px 10px;
-    }
-
-    #homeButton {
-      border: 2px solid #555;
-      background: #222;
-      color: white;
-      border-radius: 10px;
-      font-size: 18px;
-      padding: 7px 14px;
-      cursor: pointer;
-    }
-
-    #homeButton:focus,
-    #homeButton:focus-visible {
-      outline: none;
-      border-color: #00d2ff;
-    }
-
-    #appTitle {
-      font-size: 18px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    #appFrame {
-      width: 600px;
-      height: 550px;
-      border: none;
-      background: #000;
     }
   </style>
 </head>
 
 <body>
 
-  <div id="launcher">
-    <h1>App Launcher</h1>
+  <h1>App Launcher</h1>
 
-    <div id="status" aria-live="polite">
-      Select an app
-    </div>
-
-    <div class="grid">
-
-      <a class="app-button"
-         href="https://movieboxpro.app"
-         data-app="MovieBox Pro">
-        <img src="mbp.jpg" alt="MovieBox Pro">
-      </a>
-
-      <a class="app-button"
-         href="https://herald.ascents.gg/a/youtube/"
-         data-app="YouTube">
-        <img src="yt.jpg" alt="YouTube">
-      </a>
-
-      <a class="app-button"
-         href="https://accounts.google.com/v3/signin/identifier?opparams=%253Faudience%253D799222349882-ne3i0s9jdm5s0p7ll2d7tlsi1vc1halt.apps.googleusercontent.com&dsh=S1829251932%3A1792677965460326&client_id=799222349882-ne3i0s9jdm5s0p7ll2d7tlsi1vc1halt.apps.googleusercontent.com&nonce=LZ8lUjdGoNcjq0F864AX&o2v=2&redirect_uri=https%3A%2F%2Fauth.openai.com%2Fapi%2Faccounts%2Fcallback%2Fgoogle&response_type=code&scope=openid+profile+email&service=lso&state=4d0ff61c-9f5a-4624-96a4-8c19b790184a&flowName=GeneralOAuthFlow&continue=https%3A%2F%2Faccounts.google.com%2Fsignin%2Foauth%2Fv3%2Fconsent%3Fauthuser%3Dunknown%26part%3DAJi8hANBI2FJKsE9HT-FKxr2wDViSvZ5s2VuEWT5v6RNrisW5PVC0Ln1Lo8GIejzG2iDdCjNMWLoSQ4wrh8xDEe41r0iYIHapT7GmqcZoy00_hRYz6IBhT3NSLSXPktEolQfq9DsXxn1aQ7Cbsx0LrR5TpARwyz829Bi8EzFuI2mlr9YUr0E_LRgmTLOT_2uRpevJrsKS8iFUHl6wnsOau5tTMo-AKsGQcNO9kjjWFengMwIbledFOvilRmUwvqhWEMdP7nuW4NrMSto6BZvBHSNMwGkJa3XR3t9wrciLStS2sMqshWY-5HbQUn2sZXTe7ZT8OziF43qQ5ykaMxYQ5Bwqf347B5nEJPPhmZJne9fMKGiKdzYGvkRZoljrmksamCEIw85nP823Zj7GLibeyYQVfR8hobFCf0b3BR_StrYyoLuCMzwfCH8FyW2iOwz-gwUO1AC_J2bhk-u5L_BvfHfH0F3SSDeaQ%26flowName%3DGeneralOAuthFlow%26as%3DS1829251932%253A1792677965460326%26client_id%3D799222349882-ne3i0s9jdm5s0p7ll2d7tlsi1vc1halt.apps.googleusercontent.com%26requestPath%3D%252Fsignin%252Foauth%252Fv3%252Fconsent%23&app_domain=https%3A%2F%2Fauth.openai.com&rart=ANgoxcf0mGU0bZvO_HuQu9laNDpfCSQZkcuwfqt7MwVI9lx3nX9uZ3hhXJZxy7yM6HiRfx42zQkyC7mben--6VZV62uT97Xs0EYp8IqUWUH5WE2-DbDU88k"
-         data-app="ChatGPT">
-        <img src="chatgpt.jpg" alt="ChatGPT">
-      </a>
-
-      <a class="app-button"
-         href="https://your-fourth-app-url.com"
-         data-app="Custom App 4">
-        <span style="font-size:60px">⚙️</span>
-        <span>Custom App 4</span>
-      </a>
-
-    </div>
+  <div id="status" aria-live="polite">
+    Select an app
   </div>
 
-  <div id="viewer">
-    <div id="toolbar">
-      <button id="homeButton" type="button">
-        ⌂ Home
-      </button>
-      <span id="appTitle"></span>
-    </div>
+  <div class="grid">
 
-    <iframe
-      id="appFrame"
-      title="Selected application"
-      allow="fullscreen; autoplay; clipboard-read; clipboard-write"
-      referrerpolicy="strict-origin-when-cross-origin">
-    </iframe>
+    <!-- MOVIEBOX PRO -->
+    <form
+      class="app-form"
+      action="https://movieboxpro.app"
+      method="GET"
+      target="_self"
+    >
+      <button
+        class="app-button"
+        type="submit"
+        data-app="MovieBox Pro"
+      >
+        <img src="mbp.jpg" alt="MovieBox Pro">
+      </button>
+    </form>
+
+    <!-- YOUTUBE -->
+    <form
+      class="app-form"
+      action="https://herald.ascents.gg/a/youtube/"
+      method="GET"
+      target="_self"
+    >
+      <button
+        class="app-button"
+        type="submit"
+        data-app="YouTube"
+      >
+        <img src="yt.jpg" alt="YouTube">
+      </button>
+    </form>
+
+    <!-- CHATGPT -->
+    <form
+      class="app-form"
+      action="https://chatgpt.com"
+      method="GET"
+      target="_self"
+    >
+      <button
+        class="app-button"
+        type="submit"
+        data-app="ChatGPT"
+      >
+        <img src="chatgpt.jpg" alt="ChatGPT">
+      </button>
+    </form>
+
+    <!-- FOURTH APP -->
+    <form
+      class="app-form"
+      action="https://your-fourth-app-url.com"
+      method="GET"
+      target="_self"
+    >
+      <button
+        class="app-button"
+        type="submit"
+        data-app="Custom App 4"
+      >
+        <span style="font-size:60px">⚙️</span>
+        <span>Custom App 4</span>
+      </button>
+    </form>
+
   </div>
 
   <script>
-    const launcher = document.getElementById("launcher");
-    const viewer = document.getElementById("viewer");
-    const frame = document.getElementById("appFrame");
-    const status = document.getElementById("status");
-    const title = document.getElementById("appTitle");
-    const homeButton = document.getElementById("homeButton");
-    const buttons = document.querySelectorAll(".app-button");
+    const statusText = document.getElementById("status");
 
-    let lastSelected = null;
+    const appButtons =
+      document.querySelectorAll(".app-button");
 
-    function openApp(button) {
-      lastSelected = button;
+    // Show which app is selected.
+    appButtons.forEach(function(button) {
 
-      const url = button.href;
-      const appName = button.dataset.app;
-
-      title.textContent = appName;
-      status.textContent = "Opening: " + appName;
-
-      launcher.style.display = "none";
-      viewer.style.display = "block";
-
-      frame.src = url;
-
-      // Keep the Home button accessible to
-      // the Neural Band.
-      homeButton.focus();
-    }
-
-    function goHome() {
-      frame.src = "about:blank";
-
-      viewer.style.display = "none";
-      launcher.style.display = "flex";
-
-      status.textContent = "Select an app";
-
-      if (lastSelected) {
-        lastSelected.focus();
-      }
-    }
-
-    buttons.forEach(function(button) {
-      button.addEventListener("click", function(event) {
-        event.preventDefault();
-        openApp(button);
+      button.addEventListener("focus", function() {
+        statusText.textContent =
+          "Selected: " + button.dataset.app;
       });
+
+      button.addEventListener("click", function() {
+        statusText.textContent =
+          "Opening: " + button.dataset.app;
+
+        // Native form submission handles navigation.
+        // No preventDefault() here.
+      });
+
     });
 
-    homeButton.addEventListener("click", goHome);
-
+    // Neural Band pinch sends Enter.
+    // A focused submit button normally responds
+    // to Enter automatically, so we deliberately
+    // avoid intercepting the key event.
     document.addEventListener("keydown", function(event) {
-      if (event.key !== "Enter" || event.repeat) {
-        return;
+
+      if (event.key === "Enter" && !event.repeat) {
+
+        const selected = document.activeElement;
+
+        if (
+          selected &&
+          selected.classList.contains("app-button")
+        ) {
+          statusText.textContent =
+            "Submitting: " + selected.dataset.app;
+        }
+
       }
 
-      const selected = document.activeElement;
-
-      if (
-        launcher.style.display !== "none" &&
-        selected &&
-        selected.classList.contains("app-button")
-      ) {
-        event.preventDefault();
-        openApp(selected);
-      }
-
-      // The Home button uses its normal
-      // keyboard click behavior.
     });
 
+    // Focus first app when launcher loads.
     window.addEventListener("load", function() {
-      if (buttons.length) {
-        buttons[0].focus();
+      if (appButtons.length > 0) {
+        appButtons[0].focus();
       }
     });
   </script>
