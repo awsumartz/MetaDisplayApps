@@ -9,7 +9,6 @@
   <title>My Glasses Launcher</title>
 
   <style>
-    /* Dark Mode */
     :root {
       color-scheme: dark;
     }
@@ -45,7 +44,6 @@
       color: #ffffff;
     }
 
-    /* Navigation status */
     #status {
       font-size: 16px;
       color: #00d2ff;
@@ -64,7 +62,6 @@
       min-height: 0;
     }
 
-    /* App Buttons */
     .app-button {
       display: flex;
       flex-direction: column;
@@ -91,7 +88,6 @@
       color: #ffffff;
     }
 
-    /* Highlight selected app */
     .app-button:focus,
     .app-button:focus-visible {
       background-color: #222222;
@@ -104,7 +100,6 @@
       border-color: #ffffff;
     }
 
-    /* Icons */
     .icon {
       font-size: 40px;
       margin-bottom: 8px;
@@ -118,7 +113,6 @@
       pointer-events: none;
       -webkit-user-drag: none;
       user-select: none;
-      -webkit-user-select: none;
     }
   </style>
 </head>
@@ -135,37 +129,42 @@
     <!-- MovieBox Pro -->
     <a href="https://movieboxpro.app"
        class="app-button"
-       data-app="MovieBox Pro">
+       data-app="MovieBox Pro"
+       target="_blank"
+       rel="noopener">
       <span class="icon">
-        <img src="mbp.jpg"
-             alt="MovieBox Pro">
+        <img src="mbp.jpg" alt="MovieBox Pro">
       </span>
     </a>
 
     <!-- YouTube -->
     <a href="https://herald.ascents.gg/a/youtube/"
        class="app-button"
-       data-app="YouTube">
+       data-app="YouTube"
+       target="_blank"
+       rel="noopener">
       <span class="icon">
-        <img src="yt.jpg"
-             alt="YouTube">
+        <img src="yt.jpg" alt="YouTube">
       </span>
     </a>
 
     <!-- ChatGPT -->
     <a href="https://chatgpt.com"
        class="app-button"
-       data-app="ChatGPT">
+       data-app="ChatGPT"
+       target="_blank"
+       rel="noopener">
       <span class="icon">
-        <img src="chatgpt.jpg"
-             alt="ChatGPT">
+        <img src="chatgpt.jpg" alt="ChatGPT">
       </span>
     </a>
 
     <!-- Custom App 4 -->
     <a href="https://your-fourth-app-url.com"
        class="app-button"
-       data-app="Custom App 4">
+       data-app="Custom App 4"
+       target="_blank"
+       rel="noopener">
       <span class="icon">⚙️</span>
       <span>Custom App 4</span>
     </a>
@@ -179,7 +178,7 @@
     const appButtons =
       document.querySelectorAll(".app-button");
 
-    // Show which app currently has focus
+    // Display selected app
     document.addEventListener("focusin", function(event) {
       const button = event.target.closest(".app-button");
 
@@ -189,9 +188,9 @@
       }
     });
 
-    // Handle Neural Band pinch (Enter)
+    // Neural Band pinch (Enter key)
     document.addEventListener("keydown", function(event) {
-      if (event.key !== "Enter") {
+      if (event.key !== "Enter" || event.repeat) {
         return;
       }
 
@@ -205,13 +204,24 @@
         statusText.textContent =
           "Opening: " + selectedApp.dataset.app;
 
-        window.location.assign(selectedApp.href);
+        // Test opening a new browser window
+        const newWindow = window.open(
+          selectedApp.href,
+          "_blank"
+        );
+
+        if (!newWindow) {
+          statusText.textContent =
+            "New window may be blocked";
+        }
       }
     });
 
-    // Standard mouse/touch navigation
+    // Normal mouse/touch activation
     appButtons.forEach(function(button) {
-      button.addEventListener("click", function() {
+      button.addEventListener("click", function(event) {
+        // Let normal browser behavior handle
+        // mouse/touch clicks and target="_blank".
         statusText.textContent =
           "Opening: " + button.dataset.app;
       });
