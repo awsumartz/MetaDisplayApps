@@ -1,15 +1,11 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
-
   <meta name="theme-color" content="#000000">
-
   <title>My Glasses Launcher</title>
 
   <style>
@@ -19,14 +15,13 @@
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
-    html,
-    body {
-      width: 600px;
-      height: 600px;
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
       background: #000000;
       color: #ffffff;
       font-family: Arial, Helvetica, sans-serif;
@@ -34,6 +29,13 @@
     }
 
     body {
+      width: 600px;
+      height: 600px;
+    }
+
+    #launcher {
+      width: 600px;
+      height: 600px;
       display: flex;
       flex-direction: column;
       padding: 20px;
@@ -43,7 +45,7 @@
       font-size: 28px;
       font-weight: 600;
       text-align: center;
-      margin-bottom: 10px;
+      margin: 0 0 10px;
     }
 
     #status {
@@ -63,14 +65,7 @@
       min-height: 0;
     }
 
-    .app-form {
-      width: 100%;
-      height: 100%;
-    }
-
     .app-button {
-      width: 100%;
-      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -79,11 +74,9 @@
       border: 2px solid #333333;
       border-radius: 16px;
       color: #ffffff;
+      text-decoration: none;
       cursor: pointer;
       padding: 10px;
-      font-family: inherit;
-      font-size: 20px;
-      -webkit-tap-highlight-color: transparent;
       touch-action: manipulation;
     }
 
@@ -92,11 +85,6 @@
       outline: none;
       border-color: #00d2ff;
       background: #222222;
-    }
-
-    .app-button:active {
-      background: #444444;
-      border-color: #ffffff;
     }
 
     .app-button img {
@@ -111,118 +99,189 @@
     .app-button span {
       pointer-events: none;
     }
+
+    #viewer {
+      display: none;
+      width: 600px;
+      height: 600px;
+      position: relative;
+      background: #000000;
+    }
+
+    #toolbar {
+      height: 50px;
+      background: #111111;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 5px 10px;
+    }
+
+    #homeButton {
+      border: 2px solid #555555;
+      background: #222222;
+      color: #ffffff;
+      border-radius: 10px;
+      font-size: 18px;
+      padding: 7px 14px;
+      cursor: pointer;
+    }
+
+    #homeButton:focus,
+    #homeButton:focus-visible {
+      outline: none;
+      border-color: #00d2ff;
+    }
+
+    #appTitle {
+      font-size: 18px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    #appFrame {
+      width: 600px;
+      height: 550px;
+      border: none;
+      background: #000000;
+    }
   </style>
 </head>
 
 <body>
 
-  <h1>App Launcher</h1>
+  <!-- MAIN APP LAUNCHER -->
+  <div id="launcher">
+    <h1>App Launcher</h1>
 
-  <div id="status" aria-live="polite">
-    Select an app
-  </div>
+    <div id="status" aria-live="polite">
+      Select an app
+    </div>
 
-  <div class="grid">
+    <div class="grid">
 
-    <!-- MOVIEBOX PRO -->
-    <form
-      class="app-form"
-      action="https://movieboxpro.app"
-      method="GET"
-      target="_self"
-    >
-      <button
+      <!-- MOVIEBOX PRO -->
+      <a
         class="app-button"
-        type="submit"
+        href="https://movieboxpro.app"
         data-app="MovieBox Pro"
       >
         <img src="mbp.jpg" alt="MovieBox Pro">
-      </button>
-    </form>
+      </a>
 
-    <!-- YOUTUBE -->
-    <form
-      class="app-form"
-      action="https://herald.ascents.gg/a/youtube/"
-      method="GET"
-      target="_self"
-    >
-      <button
+      <!-- YOUTUBE -->
+      <a
         class="app-button"
-        type="submit"
+        href="https://herald.ascents.gg/a/youtube/"
         data-app="YouTube"
       >
         <img src="yt.jpg" alt="YouTube">
-      </button>
-    </form>
+      </a>
 
-    <!-- CHATGPT -->
-    <form
-      class="app-form"
-      action="https://chatgpt.com"
-      method="GET"
-      target="_self"
-    >
-      <button
+      <!-- CHATGPT -->
+      <a
         class="app-button"
-        type="submit"
+        href="https://chatgpt.com"
         data-app="ChatGPT"
       >
         <img src="chatgpt.jpg" alt="ChatGPT">
-      </button>
-    </form>
+      </a>
 
-    <!-- FOURTH APP -->
-    <form
-      class="app-form"
-      action="https://your-fourth-app-url.com"
-      method="GET"
-      target="_self"
-    >
-      <button
+      <!-- FOURTH APP -->
+      <a
         class="app-button"
-        type="submit"
+        href="https://your-fourth-app-url.com"
         data-app="Custom App 4"
       >
         <span style="font-size:60px">⚙️</span>
         <span>Custom App 4</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- EMBEDDED APP VIEWER -->
+  <div id="viewer">
+
+    <div id="toolbar">
+      <button id="homeButton" type="button">
+        ⌂ Home
       </button>
-    </form>
+
+      <span id="appTitle"></span>
+    </div>
+
+    <iframe
+      id="appFrame"
+      title="Selected application"
+      allow="fullscreen; autoplay; clipboard-read; clipboard-write"
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
 
   </div>
 
   <script>
+    const launcher = document.getElementById("launcher");
+    const viewer = document.getElementById("viewer");
+    const frame = document.getElementById("appFrame");
     const statusText = document.getElementById("status");
+    const appTitle = document.getElementById("appTitle");
+    const homeButton = document.getElementById("homeButton");
+    const buttons = document.querySelectorAll(".app-button");
 
-    const appButtons =
-      document.querySelectorAll(".app-button");
+    let lastSelected = null;
 
-    // Show which app is selected.
-    appButtons.forEach(function(button) {
+    function openApp(button) {
+      lastSelected = button;
+
+      const url = button.href;
+      const appName = button.dataset.app;
+
+      appTitle.textContent = appName;
+      statusText.textContent = "Opening: " + appName;
+
+      launcher.style.display = "none";
+      viewer.style.display = "block";
+
+      frame.src = url;
+
+      homeButton.focus();
+    }
+
+    function goHome() {
+      frame.src = "about:blank";
+
+      viewer.style.display = "none";
+      launcher.style.display = "flex";
+
+      statusText.textContent = "Select an app";
+
+      if (lastSelected) {
+        lastSelected.focus();
+      }
+    }
+
+    // Clicking or pinching an app opens it in the iframe.
+    buttons.forEach(function(button) {
+      button.addEventListener("click", function(event) {
+        event.preventDefault();
+        openApp(button);
+      });
 
       button.addEventListener("focus", function() {
         statusText.textContent =
           "Selected: " + button.dataset.app;
       });
-
-      button.addEventListener("click", function() {
-        statusText.textContent =
-          "Opening: " + button.dataset.app;
-
-        // Native form submission handles navigation.
-        // No preventDefault() here.
-      });
-
     });
 
-    // Neural Band pinch sends Enter.
-    // A focused submit button normally responds
-    // to Enter automatically, so we deliberately
-    // avoid intercepting the key event.
+    // Home button returns to the launcher.
+    homeButton.addEventListener("click", goHome);
+
+    // Enter activates focused links/buttons natively.
+    // We do not manually activate them again here.
     document.addEventListener("keydown", function(event) {
-
       if (event.key === "Enter" && !event.repeat) {
-
         const selected = document.activeElement;
 
         if (
@@ -230,17 +289,15 @@
           selected.classList.contains("app-button")
         ) {
           statusText.textContent =
-            "Submitting: " + selected.dataset.app;
+            "Opening: " + selected.dataset.app;
         }
-
       }
-
     });
 
-    // Focus first app when launcher loads.
+    // Automatically select the first app.
     window.addEventListener("load", function() {
-      if (appButtons.length > 0) {
-        appButtons[0].focus();
+      if (buttons.length > 0) {
+        buttons[0].focus();
       }
     });
   </script>
