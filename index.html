@@ -1,11 +1,15 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
+
   <meta name="theme-color" content="#000000">
+
   <title>My Glasses Launcher</title>
 
   <style>
@@ -15,14 +19,15 @@
 
     * {
       box-sizing: border-box;
-    }
-
-    html, body {
       margin: 0;
       padding: 0;
+    }
+
+    html,
+    body {
       width: 100%;
       height: 100%;
-      background: #000000;
+      background-color: #000000;
       color: #ffffff;
       font-family: Arial, Helvetica, sans-serif;
       overflow: hidden;
@@ -32,6 +37,8 @@
       width: 600px;
       height: 600px;
     }
+
+    /* MAIN LAUNCHER */
 
     #launcher {
       width: 600px;
@@ -45,7 +52,7 @@
       font-size: 28px;
       font-weight: 600;
       text-align: center;
-      margin: 0 0 10px;
+      margin-bottom: 10px;
     }
 
     #status {
@@ -65,19 +72,30 @@
       min-height: 0;
     }
 
+    /* APP BUTTONS */
+
     .app-button {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+
       background: #111111;
       border: 2px solid #333333;
       border-radius: 16px;
+
       color: #ffffff;
       text-decoration: none;
+
       cursor: pointer;
       padding: 10px;
+
       touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .app-button:visited {
+      color: #ffffff;
     }
 
     .app-button:focus,
@@ -87,18 +105,27 @@
       background: #222222;
     }
 
+    .app-button:active {
+      background: #444444;
+      border-color: #ffffff;
+    }
+
     .app-button img {
       width: 100%;
       max-width: 220px;
       max-height: 220px;
       object-fit: contain;
+
       pointer-events: none;
       user-select: none;
+      -webkit-user-drag: none;
     }
 
     .app-button span {
       pointer-events: none;
     }
+
+    /* EMBEDDED APP VIEWER */
 
     #viewer {
       display: none;
@@ -108,12 +135,16 @@
       background: #000000;
     }
 
+    /* TOP TOOLBAR */
+
     #toolbar {
       height: 50px;
       background: #111111;
+
       display: flex;
       align-items: center;
       gap: 12px;
+
       padding: 5px 10px;
     }
 
@@ -121,9 +152,12 @@
       border: 2px solid #555555;
       background: #222222;
       color: #ffffff;
+
       border-radius: 10px;
+
       font-size: 18px;
       padding: 7px 14px;
+
       cursor: pointer;
     }
 
@@ -140,19 +174,24 @@
       text-overflow: ellipsis;
     }
 
+    /* WEBPAGE FRAME */
+
     #appFrame {
       width: 600px;
       height: 550px;
       border: none;
       background: #000000;
     }
+
   </style>
 </head>
 
 <body>
 
   <!-- MAIN APP LAUNCHER -->
+
   <div id="launcher">
+
     <h1>App Launcher</h1>
 
     <div id="status" aria-live="polite">
@@ -162,6 +201,7 @@
     <div class="grid">
 
       <!-- MOVIEBOX PRO -->
+
       <a
         class="app-button"
         href="https://movieboxpro.app"
@@ -171,6 +211,7 @@
       </a>
 
       <!-- YOUTUBE -->
+
       <a
         class="app-button"
         href="https://herald.ascents.gg/a/youtube/"
@@ -180,6 +221,7 @@
       </a>
 
       <!-- CHATGPT -->
+
       <a
         class="app-button"
         href="https://chatgpt.com"
@@ -189,6 +231,7 @@
       </a>
 
       <!-- FOURTH APP -->
+
       <a
         class="app-button"
         href="https://your-fourth-app-url.com"
@@ -199,17 +242,21 @@
       </a>
 
     </div>
+
   </div>
 
   <!-- EMBEDDED APP VIEWER -->
+
   <div id="viewer">
 
     <div id="toolbar">
+
       <button id="homeButton" type="button">
         ⌂ Home
       </button>
 
       <span id="appTitle"></span>
+
     </div>
 
     <iframe
@@ -222,84 +269,153 @@
   </div>
 
   <script>
-    const launcher = document.getElementById("launcher");
-    const viewer = document.getElementById("viewer");
-    const frame = document.getElementById("appFrame");
-    const statusText = document.getElementById("status");
-    const appTitle = document.getElementById("appTitle");
-    const homeButton = document.getElementById("homeButton");
-    const buttons = document.querySelectorAll(".app-button");
+
+    /* ELEMENT REFERENCES */
+
+    const launcher =
+      document.getElementById("launcher");
+
+    const viewer =
+      document.getElementById("viewer");
+
+    const frame =
+      document.getElementById("appFrame");
+
+    const statusText =
+      document.getElementById("status");
+
+    const appTitle =
+      document.getElementById("appTitle");
+
+    const homeButton =
+      document.getElementById("homeButton");
+
+    const buttons =
+      document.querySelectorAll(".app-button");
 
     let lastSelected = null;
 
+    /* OPEN SELECTED APP */
+
     function openApp(button) {
+
       lastSelected = button;
 
       const url = button.href;
       const appName = button.dataset.app;
 
       appTitle.textContent = appName;
-      statusText.textContent = "Opening: " + appName;
 
+      statusText.textContent =
+        "Opening: " + appName;
+
+      // Hide launcher.
       launcher.style.display = "none";
+
+      // Show embedded viewer.
       viewer.style.display = "block";
 
+      // Load selected website.
       frame.src = url;
 
+      // Focus Home button for Neural Band.
       homeButton.focus();
     }
 
+    /* RETURN TO LAUNCHER */
+
     function goHome() {
+
+      // Stop the embedded website.
       frame.src = "about:blank";
 
+      // Hide viewer.
       viewer.style.display = "none";
+
+      // Restore launcher.
       launcher.style.display = "flex";
 
-      statusText.textContent = "Select an app";
+      statusText.textContent =
+        "Select an app";
 
+      // Restore previous selection.
       if (lastSelected) {
         lastSelected.focus();
       }
     }
 
-    // Clicking or pinching an app opens it in the iframe.
+    /* TOUCH / MOUSE ACTIVATION */
+
     buttons.forEach(function(button) {
+
       button.addEventListener("click", function(event) {
+
         event.preventDefault();
+
+        // Prevent duplicate opening.
+        if (viewer.style.display === "block") {
+          return;
+        }
+
         openApp(button);
+
       });
 
       button.addEventListener("focus", function() {
+
         statusText.textContent =
           "Selected: " + button.dataset.app;
+
       });
+
     });
 
-    // Home button returns to the launcher.
-    homeButton.addEventListener("click", goHome);
+    /* HOME BUTTON */
 
-    // Enter activates focused links/buttons natively.
-    // We do not manually activate them again here.
+    homeButton.addEventListener("click", function() {
+      goHome();
+    });
+
+    /* NEURAL BAND PINCH FIX */
+
     document.addEventListener("keydown", function(event) {
-      if (event.key === "Enter" && !event.repeat) {
-        const selected = document.activeElement;
 
-        if (
-          selected &&
-          selected.classList.contains("app-button")
-        ) {
-          statusText.textContent =
-            "Opening: " + selected.dataset.app;
-        }
+      // The Neural Band sends Enter on pinch.
+      if (event.key !== "Enter" || event.repeat) {
+        return;
       }
+
+      const selected = document.activeElement;
+
+      // Open a selected launcher app.
+      if (
+        selected &&
+        selected.classList.contains("app-button") &&
+        viewer.style.display !== "block"
+      ) {
+
+        // Stop default link navigation.
+        event.preventDefault();
+
+        // Explicitly open iframe.
+        openApp(selected);
+
+      }
+
+      // Home button retains native Enter behavior.
+
     });
 
-    // Automatically select the first app.
+    /* INITIAL FOCUS */
+
     window.addEventListener("load", function() {
+
       if (buttons.length > 0) {
         buttons[0].focus();
       }
+
     });
+
   </script>
 
 </body>
